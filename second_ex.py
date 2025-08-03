@@ -1,12 +1,10 @@
 from typing import Callable
+import re
 
 def generator_numbers(text: str):
-    for word in text.split():
-        try:
-            money = float(word)
-            yield money
-        except ValueError:
-            continue
+    pattern = r'(?<=\s)\d+\.\d+(?=\s)' #Дійсні числа у тексті вважаються записаними без помилок і чітко відокремлені пробілами з обох боків.
+    for match in re.finditer(pattern, text):
+        yield float(match.group())
 
 def sum_profit(text: str, func: Callable):
     return sum(func(text))

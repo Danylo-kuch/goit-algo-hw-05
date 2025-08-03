@@ -32,6 +32,8 @@ def input_error(func):
                 return "Usage: phone <name>"
             
             return func(*args, **kwargs)
+        except KeyError:
+            return f"The name {args[0][0]} wasn't found in your contacts"
         except (ValueError, IndexError):
             return "Give me name and phone number please!"
     return inner
@@ -45,19 +47,14 @@ def add_contact(args, contacts):
 @input_error
 def change_contacts_phone(args, contacts):
     name, new_phone = args
-    if name in contacts:
-        contacts[name] = new_phone
-        return f"Your phone number was succesfully changed"
-    else:
-        return f"The name {name} was not found"
-    
+    contacts[name] = new_phone
+    return f"Your phone number was successfully changed"
+
 @input_error
 def show_contacts_phone(args, contacts):
     name = args[0]
-    if name in contacts:
-       return f"Here is the phone number from {name}: {contacts[name]}" 
-    else:
-        return f"the name {name} was not found"
+    return f"Here is the phone number for {name}: {contacts[name]}"
+
     
 def show_all_contacts():
     with open("goit-algo-hw-04\\Bot\\contacts.txt", "r") as f:
